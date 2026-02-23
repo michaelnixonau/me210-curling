@@ -4,6 +4,11 @@ A curling robot.
 
 Requires [PlatformIO](https://platformio.org/).
 
+## Project structure
+
+- `apps/`: All programs
+- `lib/`: Reusable libraries (subsystem logic)
+
 ## Uploading
 
 - Build main firmware: `pio run -e main`
