@@ -20,7 +20,7 @@ struct PinConfig {
   const int line_right_emitter = A3;
   const int line_right_receiver = A4;
 
-  // Drive motors
+  // Drive motors (L298N motor driver)
   const int motor_left_in1 = 8;
   const int motor_left_in2 = 7;
   const int motor_left_pwm = 6;
@@ -49,12 +49,76 @@ void setAllPinModes() {
 }
 
 /****************************************************************************** 
+ *                         State Callback Procedures                          * 
+ ******************************************************************************/
+
+// Game State ------------------------------------------------------------------
+
+void game_end() {
+  // Stop the robot
+  digitalWrite(pins.motor_left_in1, LOW);
+  digitalWrite(pins.motor_left_in2, LOW);
+  digitalWrite(pins.motor_left_pwm, LOW);
+  digitalWrite(pins.motor_right_in1, LOW);
+  digitalWrite(pins.motor_right_in2, LOW);
+  digitalWrite(pins.motor_right_pwm, LOW);
+}
+
+// Homing State ----------------------------------------------------------------
+
+void wall_alignment() {
+  // @todo
+}
+
+void drive_to_front_line() {
+  // @todo
+}
+
+void rotate_90() {
+  // @todo
+}
+
+void drive_to_center_line() {
+  // @todo
+}
+
+void rotate_neg_90() {
+  // @todo
+}
+
+void drive_to_back_wall() {
+  // @todo
+}
+
+// Launching State -------------------------------------------------------------
+
+void forward() {
+  // @todo
+}
+
+void prime() {
+  // @todo
+}
+
+void shoot() {
+  // @todo
+}
+
+void backward() {
+  // @todo
+}
+
+void reload() {
+  // @todo
+}
+
+/****************************************************************************** 
  *                             Game State Machine                             * 
  ******************************************************************************/
 
 State gameStates[] = {
   State("GAME START", NULL),
-  State("GAME END", NULL)
+  State("GAME END", game_end)
 };
 
 TimedTransition gameTransitions[] = {
@@ -64,7 +128,7 @@ TimedTransition gameTransitions[] = {
 int num_game_transitions = sizeof(gameTransitions) / sizeof(gameTransitions[0]);
 
 /****************************************************************************** 
- *                             State Definitions                              * 
+ *                             Main State Machine                             * 
  ******************************************************************************/
 
 // Homing States ---------------------------------------------------------------
@@ -72,22 +136,22 @@ int num_game_transitions = sizeof(gameTransitions) / sizeof(gameTransitions[0]);
 State h[] = {
   State("orienting (primed)", NULL),
   State("orienting (primed)", NULL),
-  State("wall alignment", NULL),
-  State("drive to front line", NULL),
-  State("rotating (90 deg)", NULL),
-  State("drive to center line", NULL),
-  State("rotating (-90 deg)", NULL),
-  State("drive to back wall", NULL)
+  State("wall alignment", wall_alignment),
+  State("drive to front line", drive_to_front_line),
+  State("rotating (90 deg)", rotate_90),
+  State("drive to center line", drive_to_center_line),
+  State("rotating (-90 deg)", rotate_neg_90),
+  State("drive to back wall", drive_to_back_wall)
 };
 
 // Launching States ------------------------------------------------------------
 
 State l[] = {
-  State("forward", NULL),
-  State("prime", NULL),
-  State("shoot", NULL),
-  State("backward", NULL),
-  State("reload", NULL)
+  State("forward", forward),
+  State("prime", prime),
+  State("shoot", shoot),
+  State("backward", backward),
+  State("reload", reload)
 };
 
 // State Transitions -----------------------------------------------------------
