@@ -7,6 +7,12 @@ SimpleFSM fsm;
 
 constexpr int GAME_DURATION_MS = 2 * 60 * 1000; // 2 minutes
 
+// Helper function to convert percentage to 8-bit value (0-255)
+// This is done at compile time to prevent doing float math on the MCU
+constexpr uint8_t percent(uint8_t p) {
+  return (p > 100) ? 255 : (uint8_t)((p * 255UL) / 100);
+}
+
 /****************************************************************************** 
  *                              Pin Definitions                               * 
  ******************************************************************************/
@@ -41,6 +47,8 @@ L298NMotor rightMotor(
   pins.motor_right_pwm
 );
 
+using Direction = L298NMotor::Direction;
+
 void setAllPinModes() {
   // IR beacon sensor
   pinMode(pins.ir_beacon_receiver, INPUT);
@@ -71,48 +79,85 @@ void game_end() {
 
 void wall_alignment() {
   // @todo
+  leftMotor.setDirection(Direction::Backward);
+  leftMotor.setSpeed(percent(30));
+  rightMotor.setDirection(Direction::Backward);
+  rightMotor.setSpeed(percent(30));
 }
 
 void drive_to_front_line() {
   // @todo
+  leftMotor.setDirection(Direction::Forward);
+  leftMotor.setSpeed(percent(50));
+  rightMotor.setDirection(Direction::Forward);
+  rightMotor.setSpeed(percent(50));
 }
 
 void rotate_90() {
   // @todo
+  leftMotor.setDirection(Direction::Forward);
+  leftMotor.setSpeed(percent(50));
+  rightMotor.setDirection(Direction::Backward);
+  rightMotor.setSpeed(percent(50));
 }
 
 void drive_to_center_line() {
   // @todo
+  rightMotor.setDirection(Direction::Forward);
+  rightMotor.setSpeed(percent(50));
 }
 
 void rotate_neg_90() {
   // @todo
+  leftMotor.setDirection(Direction::Backward);
+  leftMotor.setSpeed(percent(50));
 }
 
 void drive_to_back_wall() {
   // @todo
+  leftMotor.setDirection(Direction::Backward);
+  leftMotor.setSpeed(percent(30));
+  rightMotor.setDirection(Direction::Backward);
+  rightMotor.setSpeed(percent(30));
 }
 
 // Launching State -------------------------------------------------------------
 
 void forward() {
   // @todo
+  leftMotor.setDirection(Direction::Forward);
+  leftMotor.setSpeed(percent(100));
+  rightMotor.setDirection(Direction::Forward);
+  rightMotor.setSpeed(percent(100));
 }
 
 void prime() {
   // @todo
+  // @todo: safety gate down
 }
 
 void shoot() {
   // @todo
+  leftMotor.setDirection(Direction::Brake);
+  leftMotor.setSpeed(0);
+  rightMotor.setDirection(Direction::Brake);
+  rightMotor.setSpeed(0);
 }
 
 void backward() {
   // @todo
+  leftMotor.setDirection(Direction::Backward);
+  leftMotor.setSpeed(percent(100));
+  rightMotor.setDirection(Direction::Backward);
+  rightMotor.setSpeed(percent(100));
 }
 
 void reload() {
   // @todo
+  leftMotor.setDirection(Direction::Brake);
+  leftMotor.setSpeed(0);
+  rightMotor.setDirection(Direction::Brake);
+  rightMotor.setSpeed(0);
 }
 
 /****************************************************************************** 
