@@ -1,13 +1,16 @@
 #include <Arduino.h>
 #include <SimpleFSM.h>
 
+SimpleFSM gameFsm;
 SimpleFSM fsm;
+
+constexpr int GAME_DURATION_MS = 2 * 60 * 1000; // 2 minutes
 
 /****************************************************************************** 
  *                              Pin Definitions                               * 
  ******************************************************************************/
 
-struct Pins {
+struct PinConfig {
   // IR beacon sensor
   const int ir_beacon_receiver = A0;
 
@@ -46,6 +49,21 @@ void setAllPinModes() {
 }
 
 /****************************************************************************** 
+ *                             Game State Machine                             * 
+ ******************************************************************************/
+
+State gameStates[] = {
+  State("GAME START", NULL),
+  State("GAME END", NULL)
+};
+
+TimedTransition gameTransitions[] = {
+  TimedTransition(&gameStates[0], &gameStates[1], GAME_DURATION_MS)
+};
+
+int num_game_transitions = sizeof(gameTransitions) / sizeof(gameTransitions[0]);
+
+/****************************************************************************** 
  *                             State Definitions                              * 
  ******************************************************************************/
 
@@ -72,10 +90,42 @@ State l[] = {
   State("reload", NULL)
 };
 
+// State Transitions -----------------------------------------------------------
+
+Transition transitions[] = {
+  // Homing transitions
+  Transition(&h[0], &h[1], -1),
+  Transition(&h[1], &h[2], -1),
+  Transition(&h[2], &h[3], -1),
+  Transition(&h[3], &h[4], -1),
+  Transition(&h[4], &h[3], -1),
+  Transition(&h[4], &h[5], -1),
+  Transition(&h[5], &h[6], -1),
+  Transition(&h[6], &h[7], -1),
+
+  // KEY: Homing to launching transition
+  Transition(&h[7], &l[0], -1),
+
+  // Launching transitions
+  Transition(&l[0], &l[1], -1),
+  Transition(&l[1], &l[2], -1),
+  Transition(&l[2], &l[3], -1),
+  Transition(&l[3], &l[4], -1),
+  Transition(&l[4], &l[0], -1)
+};
+
+int num_transitions = sizeof(transitions) / sizeof(transitions[0]);
+
 void setup() {
   setAllPinModes();
+
+  gameFsm.add(gameTransitions, num_game_transitions);
+  fsm.add(transitions, num_transitions);
 }
 
 void loop() {
-
+  gameFsm.run();
+  if (gameFsm.isInState(&gameStates[0])) {
+    fsm.run();
+  }
 }
