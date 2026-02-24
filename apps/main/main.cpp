@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <SimpleFSM.h>
+#include <L298N.h>
 
 SimpleFSM gameFsm;
 SimpleFSM fsm;
@@ -29,6 +30,17 @@ struct PinConfig {
   const int motor_right_pwm = 3;
 } pins;
 
+L298NMotor leftMotor(
+  pins.motor_left_in1,
+  pins.motor_left_in2,
+  pins.motor_left_pwm
+);
+L298NMotor rightMotor(
+  pins.motor_right_in1,
+  pins.motor_right_in2,
+  pins.motor_right_pwm
+);
+
 void setAllPinModes() {
   // IR beacon sensor
   pinMode(pins.ir_beacon_receiver, INPUT);
@@ -40,12 +52,8 @@ void setAllPinModes() {
   pinMode(pins.line_right_receiver, INPUT);
 
   // Drive motors
-  pinMode(pins.motor_left_in1, OUTPUT);
-  pinMode(pins.motor_left_in2, OUTPUT);
-  pinMode(pins.motor_left_pwm, OUTPUT);
-  pinMode(pins.motor_right_in1, OUTPUT);
-  pinMode(pins.motor_right_in2, OUTPUT);
-  pinMode(pins.motor_right_pwm, OUTPUT);
+  leftMotor.begin();
+  rightMotor.begin();
 }
 
 /****************************************************************************** 
@@ -55,13 +63,8 @@ void setAllPinModes() {
 // Game State ------------------------------------------------------------------
 
 void game_end() {
-  // Stop the robot
-  digitalWrite(pins.motor_left_in1, LOW);
-  digitalWrite(pins.motor_left_in2, LOW);
-  digitalWrite(pins.motor_left_pwm, LOW);
-  digitalWrite(pins.motor_right_in1, LOW);
-  digitalWrite(pins.motor_right_in2, LOW);
-  digitalWrite(pins.motor_right_pwm, LOW);
+  leftMotor.stop();
+  rightMotor.stop();
 }
 
 // Homing State ----------------------------------------------------------------
