@@ -2,12 +2,12 @@
 #include <L298N.h>
 
 namespace {
-constexpr uint8_t LEFT_IN1 = 8;
-constexpr uint8_t LEFT_IN2 = 7;
-constexpr uint8_t LEFT_PWM = 6;
-constexpr uint8_t RIGHT_IN1 = 5;
-constexpr uint8_t RIGHT_IN2 = 4;
-constexpr uint8_t RIGHT_PWM = 3;
+constexpr uint8_t RIGHT_IN1 = 7;
+constexpr uint8_t RIGHT_IN2 = 8;
+constexpr uint8_t RIGHT_PWM = 6;
+constexpr uint8_t LEFT_IN1 = 4;
+constexpr uint8_t LEFT_IN2 = 5;
+constexpr uint8_t LEFT_PWM = 3;
 
 constexpr uint8_t TEST_SPEED = 180;
 constexpr unsigned long STEP_TIME_MS = 2000;
@@ -44,13 +44,16 @@ void loop() {
 
   switch (step) {
     case 0:
-      driveBoth(L298NMotor::Direction::Forward, TEST_SPEED);
+      // driveBoth(L298NMotor::Direction::Forward, TEST_SPEED);
+      leftMotor.drive(L298NMotor::Direction::Forward, TEST_SPEED);
+      rightMotor.drive(L298NMotor::Direction::Brake, 0);
       break;
     case 1:
       driveBoth(L298NMotor::Direction::Coast, 0);
       break;
     case 2:
-      driveBoth(L298NMotor::Direction::Backward, TEST_SPEED);
+      rightMotor.drive(L298NMotor::Direction::Forward, TEST_SPEED);
+      leftMotor.drive(L298NMotor::Direction::Brake, 0);
       break;
     case 3:
     default:

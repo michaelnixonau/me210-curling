@@ -1,0 +1,93 @@
+{
+  "commentHeaderGenerator.commentStyles": {
+    "/": {
+      "Single Line": {
+        "width": 80,
+        "lines": [
+          [
+            { "type": "segment", "text": "// " },
+            { "type": "selection" },
+            { "type": "segment", "text": " " },
+            { "type": "filler", "text": "-" }
+          ]
+        ]
+      },
+      "Multi Line": {
+        "width": 80,
+        "lines": [
+          [
+            { "type": "segment", "text": "/" },
+            { "type": "filler", "text": "*" },
+            { "type": "segment", "text": " " }
+          ],
+          [
+            { "type": "segment", "text": " *" },
+            { "type": "filler", "text": " " },
+            { "type": "selection" },
+            { "type": "filler", "text": " " },
+            { "type": "segment", "text": "* " }
+          ],
+          [
+            { "type": "segment", "text": " " },
+            { "type": "filler", "text": "*" },
+            { "type": "segment", "text": "/" }
+          ]
+        ]
+      }
+    },
+    "#": {
+      "Single Line": {
+        "width": 80,
+        "lines": [
+          [
+            { "type": "segment", "text": "# " },
+            { "type": "selection" },
+            { "type": "segment", "text": " " },
+            { "type": "filler", "text": "-" }
+          ]
+        ]
+      },
+      "Multi Line": {
+        "width": 80,
+        "lines": [
+          [ { "type": "filler", "text": "#" } ],
+          [
+            { "type": "segment", "text": "#" },
+            { "type": "filler", "text": " " },
+            { "type": "selection" },
+            { "type": "filler", "text": " " },
+            { "type": "segment", "text": "#" }
+          ],
+          [ { "type": "filler", "text": "#" } ]
+        ]
+      }
+    },
+    "-": {
+      "Single Line": {
+        "width": 80,
+        "lines": [
+          [
+            { "type": "segment", "text": "-- " },
+            { "type": "selection" },
+            { "type": "segment", "text": " " },
+            { "type": "filler", "text": "-" }
+          ]
+        ]
+      },
+      "Multi Line": {
+        "width": 80,
+        "lines": [
+          [ { "type": "filler", "text": "-" } ],
+          [
+            { "type": "segment", "text": "-- " },
+            { "type": "filler", "text": " " },
+            { "type": "selection" },
+            { "type": "filler", "text": " " },
+            { "type": "segment", "text": "--" }
+          ],
+          [ { "type": "filler", "text": "-" } ]
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+POSE,t_ms,x_mm,y_mm,x_ft,y_ft,heading_arena_deg,heading_mag_arena_deg,heading_mag_global_deg,gyro_z_dps,accel_norm_mps2,rmse_mm,used_ranges,half,n_mm,s_mm,e_mm,w_mm,heading_err_deg,stationary
+POSE,1664,-1.0,-1.0,-1.000,-1.000,125.55,125.23,132.23,-0.66,9.91,-1.0,0,auto,-1,-1,-1,-1,-0.32,1
